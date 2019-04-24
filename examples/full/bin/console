@@ -1,0 +1,81 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+namespace Zlikavac32\BeanstalkdLibBundle\Examples\Full;
+
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zlikavac32\BeanstalkdLibBundle\BeanstalkdLibBundle;
+use Zlikavac32\NSBDecorators\Proxy;
+
+require_once __DIR__.'/../../../vendor/autoload.php';
+
+require_once __DIR__.'/../common.php';
+require_once __DIR__.'/../runnable.php';
+require_once __DIR__.'/../runner.php';
+
+// Used for proxied decorators
+spl_autoload_register(Proxy::class.'::loadFQN');
+
+pcntl_async_signals(true);
+
+// just polly fill so that example does not have to boot whole symfony application
+$kernel = new class('dev', true) extends \Symfony\Component\HttpKernel\Kernel
+{
+
+    public function registerBundles(): array
+    {
+        return [
+            new BeanstalkdLibBundle(),
+        ];
+    }
+
+    public function registerContainerConfiguration(LoaderInterface $loader): void
+    {
+        $loader->load(function (ContainerBuilder $container): void {
+            $container->addCompilerPass(new AddConsoleCommandPass());
+            $container->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
+
+            $container->register(EventDispatcherInterface::class, EventDispatcher::class)
+                ->setPublic(true);
+
+            $container->register(LoggerInterface::class, NullLogger::class);
+        });
+
+        $loader->load(__DIR__.'/../container.yaml');
+    }
+
+    public function getCacheDir()
+    {
+        return sys_get_temp_dir();
+    }
+};
+
+$kernel->boot();
+
+$container = $kernel->getContainer();
+
+$application = new Application();
+
+$application->setDispatcher($container->get(EventDispatcherInterface::class));
+
+foreach ($container->getParameter('console.command.ids') as $commandId) {
+    $application->add($container->get($commandId));
+}
+
+$input = new ArgvInput();
+$input->setStream(STDIN);
+
+$application->run($input, new ConsoleOutput());
+

@@ -1,0 +1,46 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zlikavac32\BeanstalkdLib\JobDispatcher\InterruptExceptionJobDispatcher:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $jobDispatcher, tag: decorator.job_dispatcher.interrupt_exception }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\SignalHandlerRunnable:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $runnable, tag: decorator.runnable.signal_handler }
+
+    Zlikavac32\BeanstalkdLib\Runner\JobObserverRunner:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $runner, tag: decorator.runner.observer }
+
+    Zlikavac32\BeanstalkdLib\Runner\AutoTouchRunner:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $runner, tag: decorator.runner.auto_touch }
+
+    Zlikavac32\BeanstalkdLib\Runner\ReleaseOnInterruptExceptionRunner:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $runner, tag: decorator.runner.release_on_interrupt }
+
+    Zlikavac32\BeanstalkdLib\Runner\BuryOnExceptionRunner:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $runner, tag: decorator.runner.bury_on_exception }
+            - { name: linker, argument: $throwableAuthority, argument_resolver_tag: throwable_authority }
+
+    Zlikavac32\BeanstalkdLib\Socket\ExclusiveAccessSocket:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $socket, tag: decorator.socket.exclusive_access }
+
+    Zlikavac32\BeanstalkdLib\Socket\LazySocket:
+        abstract: true
+        tags:
+            - { name: decorator, argument: $socket, tag: decorator.socket.lazy }

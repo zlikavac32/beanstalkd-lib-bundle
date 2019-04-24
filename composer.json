@@ -1,0 +1,48 @@
+{
+    "name": "zlikavac32/beanstalkd-lib-bundle",
+    "description": "Bundle for zlikavac32/beanstalkd-lib",
+    "keywords": ["beanstalkd", "worker", "job", "queue", "symfony", "bundle"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marijan Šuflaj",
+            "email": "msufflaj32@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Zlikavac32\\BeanstalkdLibBundle\\": "src/"
+        }
+    },
+    "autoload-dev":  {
+        "files": [
+
+        ],
+        "psr-4": {
+            "Zlikavac32\\BeanstalkdLibBundle\\Tests\\": "tests/",
+            "Zlikavac32\\BeanstalkdLibBundle\\TestHelper\\": "src-test/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.2",
+        "ext-pcntl": "*",
+        "php-ds/php-ds": "^1.2",
+        "symfony/console": "^3.4 || ^4.0",
+        "symfony/http-kernel": "^3.4 || ^4.0",
+        "symfony/dependency-injection": "^3.4 || ^4.0",
+        "symfony/config": "^3.4 || ^4.0",
+        "zlikavac32/symfony-extras": "^0.2.0",
+        "zlikavac32/beanstalkd-lib": "^0.3.0",
+        "zlikavac32/php-enum": "^2.0",
+        "zlikavac32/nsb-decorators": "^0.1.0"
+    },
+    "suggest": {
+        "ext-ds": "For better performance with php-ds"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "phpspec/phpspec": "^5.1"
+    }
+}

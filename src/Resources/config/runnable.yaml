@@ -1,0 +1,35 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\JobDispatcherRunnable:
+        tags:
+            - { name: console_runnable, command: worker:run }
+            - { name: decorator.runnable.signal_handler, proxy: true }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\BeanstalkdServerControllerRunnable:
+        tags:
+            - { name: console_runnable, command: worker:controller }
+            - { name: dynamic_composite, tag: server_controller.command, argument: $commands }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\ListKnownTubesCommand:
+        tags:
+            - { name: server_controller.command }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\FlushCommand:
+        tags:
+            - { name: server_controller.command }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\PauseTubeCommand:
+        tags:
+            - { name: server_controller.command }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\StatsCommand:
+        tags:
+            - { name: server_controller.command }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\UnpauseTubeCommand:
+        tags:
+            - { name: server_controller.command }

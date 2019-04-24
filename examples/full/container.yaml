@@ -1,0 +1,34 @@
+beanstalkd_lib: ~
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zlikavac32\BeanstalkdLibBundle\Examples\Full\QueueBruteForceRunnable:
+        tags:
+            - { name: console_runnable, command: queue-brute-force }
+
+    Zlikavac32\BeanstalkdLibBundle\Examples\Full\BruteForceSerializer:
+        tags:
+            - { name: service_provider.job_serializer, provides: brute-force-rule }
+
+    tube.brute_force_hash:
+        class: Zlikavac32\BeanstalkdLib\Client\TubeConfiguration\StaticTubeConfiguration
+        arguments:
+            $defaultDelay: 0
+            $defaultPriority: 1024
+            $defaultTimeToRun: 60
+            $defaultTubePauseDelay: 86400
+        tags:
+            - { name: tube_configuration, tube: brute_force_hash }
+            - { name: linker, argument: $serializer, provider_tag: service_provider.job_serializer, provider: brute-force-rule }
+
+    Zlikavac32\BeanstalkdLibBundle\Examples\Full\BruteForceIntegerHashRunner:
+        tags:
+            - { name: job_runner, tube: brute_force_hash }
+            - { name: decorator.runner.observer }
+            - { name: decorator.runner.bury_on_exception, i0_name: throwable_authority, i0_provider_tag: service_provider.throwable_authority, i0_provider: throw-none }
+            - { name: decorator.runner.release_on_interrupt }
+            - { name: decorator.runner.auto_touch }

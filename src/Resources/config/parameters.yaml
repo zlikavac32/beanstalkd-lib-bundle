@@ -1,0 +1,3 @@
+parameters:
+    beanstalkd_lib_php_socket_read_timeout: 10000000 # 10 seconds in microseconds
+    beanstalkd_lib_interrupt_timeout: 10 # seconds before hard interrupt happens

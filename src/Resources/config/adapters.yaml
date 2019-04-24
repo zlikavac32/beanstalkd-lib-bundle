@@ -1,0 +1,29 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zlikavac32\BeanstalkdLib\Adapter\PHP\Json\NativePHPJsonSerializer:
+        arguments:
+            $objectAsArray: true
+        tags:
+            - { name: service_provider.job_serializer, provides: native-json }
+
+    Zlikavac32\BeanstalkdLib\Adapter\PHP\Socket\NativePHPSocket:
+        arguments:
+            $readTimeout: '%beanstalkd_lib_php_socket_read_timeout%'
+        tags:
+            - { name: decorator.socket.exclusive_access }
+            - { name: decorator.socket.lazy }
+
+    Zlikavac32\BeanstalkdLib\Adapter\Symfony\Console\ClearGracefulExitEventListener:
+        tags:
+            - { name: kernel.event_listener, event: console.terminate, priority: 9223372036854775807 }
+
+    Zlikavac32\BeanstalkdLib\Adapter\Symfony\Console\ManageAlarmSchedulerEventListener:
+        tags:
+            - { name: kernel.event_listener, event: console.command, priority: 9223372036854775806 }
+            - { name: kernel.event_listener, event: console.terminate, priority: -9223372036854775807 }
+
+    Zlikavac32\BeanstalkdLib\Adapter\Symfony\Yaml\SymfonyYamlParser: ~

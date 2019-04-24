@@ -1,0 +1,84 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zlikavac32\AlarmScheduler\AlarmScheduler: '@Zlikavac32\AlarmScheduler\NaiveAlarmScheduler'
+
+    Zlikavac32\AlarmScheduler\NaiveAlarmScheduler: ~
+
+    Zlikavac32\AlarmScheduler\InterruptAlarmHandler:
+        tags:
+            - { name: service_provider.alarm_handler, provides: interrupt }
+
+    Zlikavac32\BeanstalkdLib\Client: '@Zlikavac32\BeanstalkdLib\Client\ProtocolClient'
+
+    Zlikavac32\BeanstalkdLib\Client\ProtocolClient:
+        tags:
+            - { name: tube_configuration_map, argument: $tubeConfigurations  }
+
+    Zlikavac32\BeanstalkdLib\GracefulExit: '@Zlikavac32\BeanstalkdLib\InterruptHandler\GracefulExitInterruptHandler'
+
+    Zlikavac32\BeanstalkdLib\InterruptHandler: '@Zlikavac32\BeanstalkdLib\InterruptHandler\CompositeInterruptHandler'
+
+    Zlikavac32\BeanstalkdLib\InterruptHandler\CompositeInterruptHandler:
+        tags:
+            - { name: dynamic_composite, tag: composite.interrupt_handler, argument: $interruptHandlers }
+
+    Zlikavac32\BeanstalkdLib\InterruptHandler\HardInterruptHandler:
+        tags:
+            - { name: composite.interrupt_handler, priority: 30 }
+
+    Zlikavac32\BeanstalkdLib\InterruptHandler\GracefulExitInterruptHandler:
+        tags:
+            - { name: composite.interrupt_handler, priority: 64 }
+
+    Zlikavac32\BeanstalkdLib\InterruptHandler\TimeoutHardInterruptHandler:
+        arguments:
+            $timeout: '%beanstalkd_lib_interrupt_timeout%'
+        tags:
+            - { name: composite.interrupt_handler, priority: 0 }
+            - { name: linker, argument: $alarmHandler, provider_tag: service_provider.alarm_handler, provider: interrupt }
+
+    Zlikavac32\BeanstalkdLib\JobDispatcher:
+        class: Zlikavac32\BeanstalkdLib\JobDispatcher\TubeMapJobDispatcher
+        tags:
+            - { name: decorator.job_dispatcher.interrupt_exception }
+            - { name: job_dispatcher.runners, argument: $tubeRunners}
+
+    Zlikavac32\BeanstalkdLib\Protocol: '@Zlikavac32\BeanstalkdLib\Protocol\ProtocolOverSocket'
+
+    Zlikavac32\BeanstalkdLib\ProtocolTubePurger: '@Zlikavac32\BeanstalkdLib\ProtocolTubePurger\IterativeProtocolTubePurger'
+
+    Zlikavac32\BeanstalkdLib\ProtocolTubePurger\IterativeProtocolTubePurger: ~
+
+    Zlikavac32\BeanstalkdLib\Protocol\ProtocolOverSocket:
+        arguments:
+            $socketHandle: !service
+                class: Zlikavac32\BeanstalkdLib\SocketHandle
+                factory: ['@Zlikavac32\BeanstalkdLib\Socket\NSResolveSocketFactory', 'open']
+                arguments:
+                    - '%beanstalkd_lib_host%'
+                    - '%beanstalkd_lib_port%'
+
+    Zlikavac32\BeanstalkdLib\Runner\CompositeJobObserver:
+        tags:
+            - { name: dynamic_composite, tag: job_observer, argument: $jobObservers }
+
+    Zlikavac32\BeanstalkdLib\Runner\JobObserver: '@Zlikavac32\BeanstalkdLib\Runner\CompositeJobObserver'
+
+    Zlikavac32\BeanstalkdLib\Runner\LogJobObserver:
+        tags:
+            - { name: job_observer }
+            - { name: monolog.logger, channel: worker }
+
+    Zlikavac32\BeanstalkdLib\Runner\ThrowNoneThrowableAuthority:
+        tags:
+            - { name: service_provider.throwable_authority, provides: throw-none }
+
+    Zlikavac32\BeanstalkdLib\Socket\NSResolveSocketFactory: ~
+
+    Zlikavac32\BeanstalkdLibBundle\Console\TubeStatsTableDumper: ~
+
+    Zlikavac32\BeanstalkdLib\SignalHandlerInstaller: ~
