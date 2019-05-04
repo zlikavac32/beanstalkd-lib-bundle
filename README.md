@@ -1,5 +1,7 @@
 # Beanstalkd lib bundle
 
+[![Build Status](https://travis-ci.org/zlikavac32/beanstalkd-lib-bundle.svg?branch=master)](https://travis-ci.org/zlikavac32/beanstalkd-lib-bundle)
+
 Bundle for [zlikavac32/beanstalkd-lib](https://github.com/zlikavac32/beanstalkd-lib)
 
 ## Table of contents
