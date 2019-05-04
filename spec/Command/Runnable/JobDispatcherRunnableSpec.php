@@ -129,7 +129,8 @@ foo');
         $jobDispatcher->run($client, $this->setMatcher(new Set(['foo', 'bar'])), 1)
             ->shouldBeCalled();
 
-        $jobObserver->remove($observer);
+        $jobObserver->remove($observer)
+            ->shouldBeCalled();
 
         $this->run($input, $output);
     }
@@ -166,7 +167,8 @@ foo');
         $jobDispatcher->run($client, $this->setMatcher(new Set(['foo'])), 1)
             ->shouldBeCalled();
 
-        $jobObserver->remove($observer);
+        $jobObserver->remove($observer)
+            ->shouldBeCalled();
 
         $this->run($input, $output);
     }
@@ -203,7 +205,8 @@ foo');
         $jobDispatcher->run($client, $this->setMatcher(new Set(['bar'])), 1)
             ->shouldBeCalled();
 
-        $jobObserver->remove($observer);
+        $jobObserver->remove($observer)
+            ->shouldBeCalled();
 
         $this->run($input, $output);
     }
@@ -240,7 +243,8 @@ foo');
         $jobDispatcher->run($client, $this->setMatcher(new Set(['bar'])), PHP_INT_MAX)
             ->shouldBeCalled();
 
-        $jobObserver->remove($observer);
+        $jobObserver->remove($observer)
+            ->shouldBeCalled();
 
         $this->run($input, $output);
     }
@@ -277,7 +281,8 @@ foo');
         $jobDispatcher->run($client, $this->setMatcher(new Set(['bar'])), 1)
             ->shouldBeCalled();
 
-        $jobObserver->remove($observer);
+        $jobObserver->remove($observer)
+            ->shouldBeCalled();
 
         $this->run($input, $output);
     }
