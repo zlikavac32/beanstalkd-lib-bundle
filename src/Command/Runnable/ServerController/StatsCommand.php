@@ -139,7 +139,7 @@ Sorted column is prefixed with <info><</info> or <info>></info> where
 <info><</info> is ascending order and <info>></info> is descending order.
 
 If second argument is provided, then it's interpreted as refresh
-time in seconds. Stats will be refreshed every <info>N</info> seconds.
+time in seconds. Stats will be refreshed every <info><REFRESH-TIME></info> seconds.
 
 When in refresh mode, following key bindings exist:
 
