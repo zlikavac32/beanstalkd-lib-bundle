@@ -22,6 +22,10 @@ services:
         tags:
             - { name: server_controller.command }
 
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\KickCommand:
+        tags:
+            - { name: server_controller.command }
+
     Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\PauseTubeCommand:
         tags:
             - { name: server_controller.command }
