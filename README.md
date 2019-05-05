@@ -115,6 +115,8 @@ To run existing runners, use `bin/console worker:run`.
 
 Simple REPL controller for the client is provided as `bin/console worker:controller`. It can be used also to run standalone commands.
 
+![Server controller demo](docs/res/img/server-controller.webp)
+
 Features include:
 
 - list tubes
