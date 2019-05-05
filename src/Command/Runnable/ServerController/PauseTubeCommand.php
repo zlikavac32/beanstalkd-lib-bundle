@@ -120,10 +120,10 @@ If no additional argument is provided, then tube default pause time is used.
 
 If second argument is provided, it must be either a positive integer that
 represents number of seconds to pause for, or it can be string in format
-XhYmZs. X is number of hours, Y is number of minutes and Z is number of 
+<info>XhYmZs</info>. <info>X</info> is number of hours, <info>Y</info> is number of minutes and <info>Z</info> is number of 
 seconds to pause for. Parts that are zero can be left out.
 
-pause 3h20m pauses for 3 hours and 20 minutes
+pause <info>3h20m</info> pauses for 3 hours and 20 minutes
 TEXT
         );
     }

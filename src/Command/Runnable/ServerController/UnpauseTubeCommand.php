@@ -59,8 +59,9 @@ class UnpauseTubeCommand implements Command {
     public function help(OutputInterface $output): void {
         $output->writeln(
             <<<'TEXT'
-Unpauses tube provided as the first argument. If no tube name
-is provided, every tube is unpaused
+Unpauses tube provided as the first argument.
+
+If no tube name is provided, every tube is unpaused.
 TEXT
         );
     }

@@ -135,9 +135,9 @@ Prints current stats like number of active/reserved/buried jobs
 for each tube.
 
 If second argument is provided, then it's interpreted as refresh
-time in seconds. Stats will be refreshed every N seconds.
+time in seconds. Stats will be refreshed every <info>N</info> seconds.
 
-To exit from stats, press q.
+To exit from stats, press <info>q</info>.
 TEXT
         );
     }

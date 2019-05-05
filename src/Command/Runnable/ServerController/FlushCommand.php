@@ -101,9 +101,9 @@ class FlushCommand implements Command
             <<<'TEXT'
 Flushes every tube or a single tube. 
 
-To skip question, use -f flag.
+To skip question, use <info>-f</info> flag.
 
-Reserved jobs are not flushed.
+<comment>Reserved jobs are not flushed.</comment>
 TEXT
         );
     }
