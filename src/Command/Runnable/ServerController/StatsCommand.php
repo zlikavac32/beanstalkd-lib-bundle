@@ -91,6 +91,7 @@ class StatsCommand implements Command {
             $fh = $input->getStream();
             assert($fh !== null);
 
+            // @todo: explore idea of reinstalling signal handlers without system call restart
             stream_set_blocking($fh, false);
 
             try {
@@ -134,10 +135,18 @@ class StatsCommand implements Command {
 Prints current stats like number of active/reserved/buried jobs
 for each tube.
 
+Sorted column is prefixed with <info><</info> or <info>></info> where
+<info><</info> is ascending order and <info>></info> is descending order.
+
 If second argument is provided, then it's interpreted as refresh
 time in seconds. Stats will be refreshed every <info>N</info> seconds.
 
-To exit from stats, press <info>q</info>.
+When in refresh mode, following key bindings exist:
+
+- <info>q</info> - quits from display
+- <info>h</info> - sort by the previous column
+- <info>l</info> - sort by the next column
+- <info>r</info> - reverse sort
 TEXT
         );
     }
