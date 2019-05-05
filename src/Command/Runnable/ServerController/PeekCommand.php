@@ -129,7 +129,7 @@ class PeekCommand implements Command
 
         $jobStats = $jobHandle->stats();
 
-        $output->writeln(sprintf('<info>Delay:</info> %d', $jobStats->delay()));
+        $output->writeln(sprintf('<info>Delay:</info> %s', microTimeToHuman((float)$jobStats->delay()) ?: '-/-'));
         $output->writeln(sprintf('<info>Priority:</info> %d', $jobStats->priority()));
         $output->writeln(sprintf('<info>Time-to-run:</info> %s', microTimeToHuman($jobStats->timeToRun())));
         $output->writeln(sprintf('<info>Time left:</info> %s', microTimeToHuman($jobStats->timeLeft()) ?: '-/-'));

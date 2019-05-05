@@ -181,7 +181,7 @@ class PeekCommandTest extends TestCase
 
         $expectedOutput = <<<'TEXT'
 ID: 32
-Delay: 0
+Delay: -/-
 Priority: 1024
 Time-to-run: 5 min
 Time left: -/-
