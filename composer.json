@@ -31,7 +31,7 @@
         "php-ds/php-ds": "^1.2",
         "symfony/console": "^4.1",
         "symfony/http-kernel": "^3.4 || ^4.0",
-        "symfony/dependency-injection": "^3.4 || ^4.0",
+        "symfony/dependency-injection": "^4.1",
         "symfony/config": "^4.2",
         "zlikavac32/symfony-extras": "^0.2.0",
         "zlikavac32/beanstalkd-lib": "^0.3.0",
