@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zlikavac32\BeanstalkdLibBundle\Tests\Unit\Console;
+namespace Zlikavac32\BeanstalkdLibBundle\Tests\Integration\Console;
 
 use Ds\Map;
 use Ds\Set;
@@ -10,22 +10,11 @@ use Ds\Vector;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use Zlikavac32\AlarmScheduler\TestHelper\PHPUnit\UnsupportedMethodCallException;
-use Zlikavac32\BeanstalkdLib\BeanstalkdLibException;
 use Zlikavac32\BeanstalkdLib\Client;
-use Zlikavac32\BeanstalkdLib\DeadlineSoonException;
-use Zlikavac32\BeanstalkdLib\ExpectedCRLFException;
-use Zlikavac32\BeanstalkdLib\JobBuriedException;
 use Zlikavac32\BeanstalkdLib\JobHandle;
-use Zlikavac32\BeanstalkdLib\JobNotFoundException;
-use Zlikavac32\BeanstalkdLib\JobToBigException;
-use Zlikavac32\BeanstalkdLib\NotFoundException;
-use Zlikavac32\BeanstalkdLib\NotIgnoredException;
-use Zlikavac32\BeanstalkdLib\ReserveTimedOutException;
-use Zlikavac32\BeanstalkdLib\ServerInDrainingModeException;
 use Zlikavac32\BeanstalkdLib\ServerStats;
 use Zlikavac32\BeanstalkdLib\TubeHandle;
 use Zlikavac32\BeanstalkdLib\TubeMetrics;
-use Zlikavac32\BeanstalkdLib\TubeNotFoundException;
 use Zlikavac32\BeanstalkdLib\TubeStats;
 use Zlikavac32\BeanstalkdLibBundle\Console\TableDumperColumn;
 use Zlikavac32\BeanstalkdLibBundle\Console\TubeStatsTableDumper;
