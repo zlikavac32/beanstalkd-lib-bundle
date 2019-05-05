@@ -59,16 +59,6 @@ class BeanstalkdServerControllerRunnable implements HelperSetAwareRunnable, Runn
 
         $commandsWithHelpAndQuit = $commandsWithHelpAndQuit->merge($dynamicCommands)->sorted();
 
-        $autoComplete = new Vector(['help', 'quit']);
-
-        foreach ($dynamicCommands->sorted() as $dynamicCommand) {
-            $autoComplete->push(sprintf('help %s', $dynamicCommand));
-        }
-
-        foreach ($this->commands as $command) {
-            $autoComplete = $autoComplete->merge($command->autoComplete());
-        }
-
         if (count($input->getArgument('cmd')) > 0) {
             $commandFromInput = $input->getArgument('cmd');
 
@@ -86,10 +76,22 @@ class BeanstalkdServerControllerRunnable implements HelperSetAwareRunnable, Runn
         $questionHelper = $this->helperSet->get('question');
         assert($questionHelper instanceof QuestionHelper);
 
-        $nextCommandQuestion = new Question('> ');
-        $nextCommandQuestion->setAutocompleterValues($autoComplete->toArray());
+        $staticAutoComplete = new Vector(['help', 'quit']);
+
+        foreach ($dynamicCommands->sorted() as $dynamicCommand) {
+            $staticAutoComplete->push(sprintf('help %s', $dynamicCommand));
+        }
 
         while (true) {
+            $currentRunAutoComplete = $staticAutoComplete;
+
+            foreach ($this->commands as $command) {
+                $currentRunAutoComplete = $currentRunAutoComplete->merge($command->autoComplete());
+            }
+
+            $nextCommandQuestion = new Question('> ');
+            $nextCommandQuestion->setAutocompleterValues($currentRunAutoComplete->toArray());
+
             $commandLine = $questionHelper->ask($input, $output, $nextCommandQuestion);
 
             if (null === $commandLine) {

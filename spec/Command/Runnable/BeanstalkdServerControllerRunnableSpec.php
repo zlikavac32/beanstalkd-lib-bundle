@@ -90,8 +90,6 @@ TEXT
 
         $command->name()
             ->willReturn('foo');
-        $command->autoComplete()
-            ->willReturn(new Vector());
 
         $input->getArgument('cmd')
             ->willReturn(['help', 'foo']);
@@ -184,7 +182,7 @@ TEXT
             ->willReturn('baz');
 
         $fooCommand->autoComplete()
-            ->willReturn(new Vector(['foo']));
+            ->willReturn(new Vector(['foo']), new Vector(['foo', 'foo new-tube']));
         $barCommand->autoComplete()
             ->willReturn(new Vector(['bar']));
         $bazCommand->autoComplete()
@@ -201,11 +199,16 @@ TEXT
         $helperSet->get('question')
             ->willReturn($questionHelper);
 
-        $question = new Question('> ');
-        $question->setAutocompleterValues(['help', 'quit', 'help bar', 'help baz', 'help foo', 'foo', 'bar', 'baz']);
+        $questionFirstTime = new Question('> ');
+        $questionFirstTime->setAutocompleterValues(['help', 'quit', 'help bar', 'help baz', 'help foo', 'foo', 'bar', 'baz']);
 
-        $questionHelper->ask($input, $output, $question)
-            ->willReturn('foo 123', 'help', 'baz', 'bar demo', 'bar', 'quit');
+        $questionSecondTime = new Question('> ');
+        $questionSecondTime->setAutocompleterValues(['help', 'quit', 'help bar', 'help baz', 'help foo', 'foo', 'foo new-tube', 'bar', 'baz']);
+
+        $questionHelper->ask($input, $output, $questionFirstTime)
+            ->willReturn('foo 123');
+        $questionHelper->ask($input, $output, $questionSecondTime)
+            ->willReturn('help', 'baz', 'bar demo', 'bar', 'quit');
 
         $fooCommand->run(['123'], $input, $helperSet, $output)
             ->shouldBeCalled();
