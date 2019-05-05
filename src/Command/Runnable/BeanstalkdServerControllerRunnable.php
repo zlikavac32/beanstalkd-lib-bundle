@@ -90,7 +90,13 @@ class BeanstalkdServerControllerRunnable implements HelperSetAwareRunnable, Runn
         $nextCommandQuestion->setAutocompleterValues($autoComplete->toArray());
 
         while (true) {
-            $parsed = preg_split('/\s+/', trim($questionHelper->ask($input, $output, $nextCommandQuestion)));
+            $commandLine = $questionHelper->ask($input, $output, $nextCommandQuestion);
+
+            if (null === $commandLine) {
+                continue;
+            }
+
+            $parsed = preg_split('/\s+/', trim($commandLine));
 
             $nextCommand = array_shift($parsed);
 

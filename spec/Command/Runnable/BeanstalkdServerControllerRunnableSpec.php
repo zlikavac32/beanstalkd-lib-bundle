@@ -6,6 +6,7 @@ namespace spec\Zlikavac32\BeanstalkdLibBundle\Command\Runnable;
 
 use Ds\Vector;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -131,6 +132,37 @@ TEXT
 
         $this->run($input, $output)
             ->shouldReturn(1);
+    }
+
+    public function it_should_read_next_line_on_empty_line(
+        InputInterface $input,
+        ConsoleOutputInterface $output,
+        HelperSet $helperSet,
+        QuestionHelper $questionHelper
+    ): void {
+
+        $input->getArgument('cmd')
+            ->willReturn([]);
+
+        $input->isInteractive()
+            ->willReturn(true);
+
+        $this->useHelperSet($helperSet);
+
+        $helperSet->get('question')
+            ->willReturn($questionHelper);
+
+        $question = new Question('> ');
+        $question->setAutocompleterValues(['help', 'quit']);
+
+        $questionHelper->ask($input, $output, $question)
+            ->willReturn(null, 'help', 'quit');
+
+        $output->writeln(Argument::type('string'))
+            ->shouldBeCalled();
+
+        $this->run($input, $output)
+            ->shouldReturn(0);
     }
 
     public function it_should_run_few_command_and_then_exit(
