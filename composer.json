@@ -28,6 +28,7 @@
     "require": {
         "php": "^7.2",
         "ext-pcntl": "*",
+        "ext-posix": "*",
         "php-ds/php-ds": "^1.2",
         "symfony/console": "^4.1",
         "symfony/http-kernel": "^3.4 || ^4.0",
@@ -36,7 +37,8 @@
         "zlikavac32/symfony-extras": "^0.2.0",
         "zlikavac32/beanstalkd-lib": "^0.3.0",
         "zlikavac32/php-enum": "^2.0",
-        "zlikavac32/nsb-decorators": "^0.1.0"
+        "zlikavac32/nsb-decorators": "^0.1.0",
+        "symfony/var-dumper": "^4.0"
     },
     "suggest": {
         "ext-ds": "For better performance with php-ds"

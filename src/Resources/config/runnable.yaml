@@ -30,6 +30,10 @@ services:
         tags:
             - { name: server_controller.command }
 
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\PeekCommand:
+        tags:
+            - { name: server_controller.command }
+
     Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\StatsCommand:
         tags:
             - { name: server_controller.command }

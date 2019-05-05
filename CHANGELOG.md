@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* **[ADDED]** `symfony/var-dump:^4.0` as a new requirement
+* **[ADDED]** `ext-posix` as a new requirement
+* **[ADDED]** `peek` server controller command
 * **[CHANGED]** Server controller refreshes autocomplete list on every iteration
 * **[CHANGED]** Minimal version for `symfony/dependency-injection` is `^4.1`
 * **[ADDED]** `kick` server controller command
