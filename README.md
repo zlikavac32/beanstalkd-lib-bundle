@@ -124,6 +124,12 @@ Features include:
 - print stats (with optional refresh)
 - flush tube/tubes
 
+To use pager in `peek` command, evironment variable `PAGER` must be set to a pager program. `less` is one such program whcih can be used directly like `PAGER=less bin/console ...` or exported somewhere.
+
+For `less`, additional environment variable `LESS` that describes `less` arguments can be defined. For example, `LESS='-F' PAGER=less bin/console` can be used to skip paging if the whole text can be displayed on screen.
+
+In Docker, `-R` should be used to display color escape sequences correctly.
+
 ## Examples
 
 You can see more examples with code comments in [examples](/examples).
