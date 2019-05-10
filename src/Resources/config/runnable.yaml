@@ -1,3 +1,6 @@
+parameters:
+    beanstalkd_lib.server_controller.wait.sleep_time: 1
+
 services:
     _defaults:
         autowire: true
@@ -39,5 +42,11 @@ services:
             - { name: server_controller.command }
 
     Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\UnpauseTubeCommand:
+        tags:
+            - { name: server_controller.command }
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\WaitCommand:
+        arguments:
+            $sleepTime: '%beanstalkd_lib.server_controller.wait.sleep_time%'
         tags:
             - { name: server_controller.command }
