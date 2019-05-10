@@ -1,5 +1,9 @@
 # Beanstalkd lib bundle
 
+## Unreleased
+
+* **[ADDED]** `wait` server controller command
+
 ## 0.1.1 (2019-05-05)
 
 * **[ADDED]** `symfony/var-dump:^4.0` as a new requirement
