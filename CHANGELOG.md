@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* **[ADDED]** `delete` server controller command
 * **[ADDED]** `wait` server controller command
 
 ## 0.1.1 (2019-05-05)
