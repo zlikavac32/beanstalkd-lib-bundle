@@ -50,6 +50,8 @@ use Zlikavac32\NSBDecorators\Proxy;
 spl_autoload_register(Proxy::class.'::loadFQN');
 ```
 
+For now, since proxied decorators are evaluated, container requires must not be inlined (`container.dumper.inline_class_loader` parameter must not exist or be set to `false`).
+
 Async signals are also a requirement.
 
 ```php
