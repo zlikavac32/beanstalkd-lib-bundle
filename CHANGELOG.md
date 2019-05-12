@@ -1,6 +1,6 @@
 # Beanstalkd lib bundle
 
-## Unreleased
+## 0.1.2 (2019-05-12)
 
 * **[ADDED]** `delete` server controller command
 * **[ADDED]** `wait` server controller command
