@@ -12,8 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Zlikavac32\BeanstalkdLib\Client;
-use Zlikavac32\BeanstalkdLib\Protocol;
-use Zlikavac32\BeanstalkdLib\ProtocolTubePurger;
 
 class FlushCommand implements Command
 {
@@ -22,14 +20,6 @@ class FlushCommand implements Command
      * @var Client
      */
     private $client;
-    /**
-     * @var Protocol
-     */
-    private $protocol;
-    /**
-     * @var ProtocolTubePurger
-     */
-    private $protocolTubePurger;
 
     public function __construct(Client $client)
     {
