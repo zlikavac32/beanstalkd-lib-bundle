@@ -6,6 +6,7 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
@@ -56,7 +57,7 @@ class StatsCommand implements Command {
             TableDumperColumn::PAUSED_TIME(),
         ]);
 
-        if (!isset($arguments[0]) || !$this->isSttyAvailable() || !$input->isInteractive() || !$input instanceof StreamableInputInterface) {
+        if (null === $arguments['refresh-time'] || !$this->isSttyAvailable() || !$input->isInteractive() || !$input instanceof StreamableInputInterface) {
             $this->tableDumper->dump($output, $columns);
 
             return;
@@ -70,7 +71,7 @@ class StatsCommand implements Command {
             $output,
             $this->tableDumper,
             $columns,
-            (int) $arguments[0]
+            (int) $arguments['refresh-time']
         );
 
         $alarmHandler->handle($this->alarmScheduler);
@@ -153,5 +154,12 @@ TEXT
 
     public function name(): string {
         return 'stats';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([], [
+            new Operand('refresh-time')
+        ]);
     }
 }

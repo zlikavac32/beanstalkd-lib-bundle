@@ -77,7 +77,7 @@ class UnpauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(0)
             ->shouldBeCalled();
 
-        $this->run([], $input, $helperSet, $output);
+        $this->run(['tube-name' => null], $input, $helperSet, $output);
     }
 
     public function it_should_throw_exception_when_tube_name_in_argument_does_not_exist(
@@ -93,7 +93,7 @@ class UnpauseTubeCommandSpec extends ObjectBehavior
             ]));
 
         $this->shouldThrow(new CommandException('Unknown tube does-not-exist'))
-            ->duringRun(['does-not-exist'], $input, $helperSet, $output);
+            ->duringRun(['tube-name' => 'does-not-exist'], $input, $helperSet, $output);
     }
 
     public function it_should_unpause_only_tube_mentioned_in_argument(
@@ -118,6 +118,6 @@ class UnpauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->run(['foo'], $input, $helperSet, $output);
+        $this->run(['tube-name' => 'foo'], $input, $helperSet, $output);
     }
 }

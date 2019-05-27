@@ -6,6 +6,8 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
+use GetOpt\Option;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -53,17 +55,13 @@ class FlushCommand implements Command
 
     private function shouldAskQuestion(array $arguments): bool
     {
-        return !(isset($arguments[0]) && '-f' === $arguments[0]);
+        return null === $arguments['-f'];
     }
 
     private function resolveTubeNames(array $arguments): array
     {
-        if (isset($arguments[1])) {
-            return [$arguments[1]];
-        }
-
-        if (isset($arguments[0]) && '-f' !== $arguments[0]) {
-            return [$arguments[0]];
+        if (null !== $arguments['tube-name']) {
+            return [$arguments['tube-name']];
         }
 
         return $this->client->tubes()->keys()->toArray();
@@ -101,5 +99,14 @@ TEXT
     public function name(): string
     {
         return 'flush';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([
+            new Option('f')
+        ], [
+            new Operand('tube-name')
+        ]);
     }
 }

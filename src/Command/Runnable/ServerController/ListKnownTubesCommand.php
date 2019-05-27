@@ -43,4 +43,9 @@ class ListKnownTubesCommand implements Command {
     public function name(): string {
         return 'list';
     }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype();
+    }
 }

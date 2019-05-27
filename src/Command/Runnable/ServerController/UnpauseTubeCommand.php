@@ -6,6 +6,7 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,7 +24,7 @@ class UnpauseTubeCommand implements Command {
     }
 
     public function run(array $arguments, InputInterface $input, HelperSet $helperSet, OutputInterface $output): void {
-        if (!isset($arguments[0])) {
+        if (null === $arguments['tube-name']) {
             foreach ($this->client->tubes() as $tube) {
                 $tube->pause(0);
             }
@@ -31,7 +32,7 @@ class UnpauseTubeCommand implements Command {
             return;
         }
 
-        $tubeName = $arguments[0];
+        $tubeName = $arguments['tube-name'];
 
         if (!$this->client->tubes()
             ->hasKey($tubeName)) {
@@ -68,5 +69,12 @@ TEXT
 
     public function name(): string {
         return 'unpause';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([], [
+            new Operand('tube-name')
+        ]);
     }
 }

@@ -81,7 +81,7 @@ class FlushCommandSpec extends ObjectBehavior
 
         $tubeHandle->flush()->shouldBeCalled();
 
-        $this->run(['-f', 'foo'], $input, $helperSet, $output);
+        $this->run(['-f' => 1, 'tube-name' => 'foo'], $input, $helperSet, $output);
     }
 
     public function it_should_flush_all_tubes_on_force(
@@ -104,7 +104,7 @@ class FlushCommandSpec extends ObjectBehavior
         $fooTubeHandle->flush()->shouldBeCalled();
         $barTubeHandle->flush()->shouldBeCalled();
 
-        $this->run(['-f'], $input, $helperSet, $output);
+        $this->run(['-f' => 1, 'tube-name' => null], $input, $helperSet, $output);
     }
 
     public function it_should_flush_tube_without_force_when_confirmed(
@@ -125,7 +125,7 @@ class FlushCommandSpec extends ObjectBehavior
 
         $tubeHandle->flush()->shouldBeCalled();
 
-        $this->run(['foo'], $input, $helperSet, $output);
+        $this->run(['-f' => null, 'tube-name' => 'foo'], $input, $helperSet, $output);
     }
 
     public function it_should_flush_all_tubes_without_force_when_confirmed(
@@ -155,7 +155,7 @@ class FlushCommandSpec extends ObjectBehavior
         $fooTubeHandle->flush()->shouldBeCalled();
         $barTubeHandle->flush()->shouldBeCalled();
 
-        $this->run([], $input, $helperSet, $output);
+        $this->run(['-f' => null, 'tube-name' => null], $input, $helperSet, $output);
     }
 
     public function it_should_not_flush_tube_without_force_when_not_confirmed(
@@ -173,7 +173,7 @@ class FlushCommandSpec extends ObjectBehavior
 
         $client->tube(Argument::any())->shouldNotBeCalled();
 
-        $this->run(['foo'], $input, $helperSet, $output);
+        $this->run(['-f' => null, 'tube-name' => 'foo'], $input, $helperSet, $output);
     }
 
     public function it_should_not_flush_all_tubes_without_force_when_not_confirmed(
@@ -200,7 +200,7 @@ class FlushCommandSpec extends ObjectBehavior
 
         $client->tube(Argument::any())->shouldNotBeCalled();
 
-        $this->run([], $input, $helperSet, $output);
+        $this->run(['-f' => null, 'tube-name' => null], $input, $helperSet, $output);
     }
 
     private function confirmQuestionToken(int $count): TokenInterface

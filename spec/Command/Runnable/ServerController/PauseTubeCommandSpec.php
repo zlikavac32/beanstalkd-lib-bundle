@@ -87,7 +87,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(null)
             ->shouldBeCalled();
 
-        $this->run([], $input, $helperSet, $output);
+        $this->run(['tube-name' => null, 'pause-time' => null], $input, $helperSet, $output);
     }
 
     public function it_should_pause_all_tubes_without_timeout_when_valid_string_timeout_is_first_argument(
@@ -109,7 +109,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(2 * 3600 + 10 * 60 + 20)
             ->shouldBeCalled();
 
-        $this->run(['2h10m20s'], $input, $helperSet, $output);
+        $this->run(['tube-name' => '2h10m20s', 'pause-time' => null], $input, $helperSet, $output);
     }
 
     public function it_should_pause_all_tubes_without_timeout_when_valid_seconds_timeout_is_first_argument(
@@ -131,7 +131,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(32)
             ->shouldBeCalled();
 
-        $this->run(['32'], $input, $helperSet, $output);
+        $this->run(['tube-name' => '32', 'pause-time' => null], $input, $helperSet, $output);
     }
 
     public function it_should_pause_only_tube_mentioned_in_argument(
@@ -156,7 +156,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->run(['foo'], $input, $helperSet, $output);
+        $this->run(['tube-name' => 'foo', 'pause-time' => null], $input, $helperSet, $output);
     }
 
     public function it_should_pause_only_tube_mentioned_in_argument_with_timeout(
@@ -181,7 +181,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
         $barTubeHandle->pause(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->run(['foo', '32'], $input, $helperSet, $output);
+        $this->run(['tube-name' => 'foo', 'pause-time' => '32'], $input, $helperSet, $output);
     }
 
     public function it_should_throw_exception_when_tube_name_in_argument_does_not_exist(
@@ -197,7 +197,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
             ]));
 
         $this->shouldThrow(new CommandException('Unknown tube does-not-exist'))
-            ->duringRun(['does-not-exist'], $input, $helperSet, $output);
+            ->duringRun(['tube-name' => 'does-not-exist', 'pause-time' => null], $input, $helperSet, $output);
     }
 
     public function it_should_throw_exception_when_timeout_is_not_correct(
@@ -213,7 +213,7 @@ class PauseTubeCommandSpec extends ObjectBehavior
             ]));
 
         $this->shouldThrow(new CommandException('Pause time must be a positive integer or in format XhYmZs for X hours, Y minutes and Z seconds, but bar was given'))
-            ->duringRun(['foo', 'bar'], $input, $helperSet, $output);
+            ->duringRun(['tube-name' => 'foo', 'pause-time' => 'bar'], $input, $helperSet, $output);
     }
 
     public function it_should_throw_exception_when_timeout_is_zero(
@@ -229,6 +229,6 @@ class PauseTubeCommandSpec extends ObjectBehavior
             ]));
 
         $this->shouldThrow(new CommandException('Pause time must be a positive integer or in format XhYmZs for X hours, Y minutes and Z seconds, but 0 was given'))
-            ->duringRun(['foo', '0'], $input, $helperSet, $output);
+            ->duringRun(['tube-name' => 'foo', 'pause-time' => '0'], $input, $helperSet, $output);
     }
 }

@@ -6,6 +6,7 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,15 +24,18 @@ class PauseTubeCommand implements Command {
     }
 
     public function run(array $arguments, InputInterface $input, HelperSet $helperSet, OutputInterface $output): void {
-        if (!isset($arguments[0])) {
+        $tubeName = $arguments['tube-name'];
+        $sleepTime = $arguments['pause-time'];
+
+        if (null === $tubeName && null === $sleepTime) {
             $this->pauseAll();
 
             return ;
         }
 
-        if (count($arguments) === 1) {
+        if (null !== $tubeName && null === $sleepTime) {
             try {
-                $this->pauseAll($this->parseSleepTime($arguments[0]));
+                $this->pauseAll($this->parseSleepTime($tubeName));
 
                 return ;
             } catch (CommandException $e) {
@@ -39,12 +43,10 @@ class PauseTubeCommand implements Command {
             }
         }
 
-        $tubeName = $arguments[0];
-
         $defaultPauseTime = null;
 
-        if (isset($arguments[1])) {
-            $defaultPauseTime = $this->parseSleepTime($arguments[1]);
+        if (null !== $sleepTime) {
+            $defaultPauseTime = $this->parseSleepTime($sleepTime);
         }
 
         if (!$this->client->tubes()
@@ -130,5 +132,13 @@ TEXT
 
     public function name(): string {
         return 'pause';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([], [
+            new Operand('tube-name'),
+            new Operand('pause-time'),
+        ]);
     }
 }

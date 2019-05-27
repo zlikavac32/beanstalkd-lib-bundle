@@ -12,7 +12,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Zlikavac32\BeanstalkdLib\Client;
 use Zlikavac32\BeanstalkdLib\JobHandle;
 use Zlikavac32\BeanstalkdLib\JobNotFoundException;
-use Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\CommandException;
 use Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\DeleteCommand;
 
 class DeleteCommandSpec extends ObjectBehavior
@@ -50,18 +49,16 @@ class DeleteCommandSpec extends ObjectBehavior
             ->shouldReturn('delete');
     }
 
-    public function it_should_throw_exception_if_job_id_parameter_is_missing(Client $client, InputInterface $input, HelperSet $helperSet, OutputInterface $output): void
+    public function it_should_have_job_id_as_required_in_prototype(): void
     {
-        $client->peek(Argument::any())->shouldNotBeCalled();
-
-        $this->shouldThrow(new CommandException('Missing <JOB-ID> parameter'))->duringRun([], $input, $helperSet, $output);
+        $this->prototype()->shouldHaveOperandAsRequired('job-id');
     }
 
     public function it_should_ignore_job_not_found_exception(Client $client, InputInterface $input, HelperSet $helperSet, OutputInterface $output): void
     {
         $client->peek(32)->shouldBeCalled()->willThrow(new JobNotFoundException(32));
 
-        $this->run([32], $input, $helperSet, $output);
+        $this->run(['job-id' => 32], $input, $helperSet, $output);
     }
 
     public function it_should_delete_job(Client $client, InputInterface $input, HelperSet $helperSet, OutputInterface $output, JobHandle $jobHandle): void
@@ -70,7 +67,7 @@ class DeleteCommandSpec extends ObjectBehavior
 
         $jobHandle->delete()->shouldBeCalled();
 
-        $this->run([32], $input, $helperSet, $output);
+        $this->run(['job-id' => 32], $input, $helperSet, $output);
 
     }
 }

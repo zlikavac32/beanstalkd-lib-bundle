@@ -6,6 +6,7 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,12 +28,8 @@ class DeleteCommand implements Command
 
     public function run(array $arguments, InputInterface $input, HelperSet $helperSet, OutputInterface $output): void
     {
-        if (!isset($arguments[0])) {
-            throw new CommandException('Missing <JOB-ID> parameter');
-        }
-
         try {
-            $this->client->peek((int)$arguments[0])
+            $this->client->peek((int)$arguments['job-id'])
                 ->delete();
         } catch (JobNotFoundException $e) {
             // job deleted, ignore
@@ -56,5 +53,12 @@ TEXT
     public function name(): string
     {
         return 'delete';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([], [
+            new Operand('job-id', Operand::REQUIRED)
+        ]);
     }
 }
