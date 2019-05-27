@@ -6,10 +6,12 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
+use GetOpt\Option;
+use LogicException;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -17,9 +19,8 @@ use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Zlikavac32\BeanstalkdLib\Client;
 use Zlikavac32\BeanstalkdLib\JobHandle;
-use function Zlikavac32\BeanstalkdLib\microTimeToHuman;
 use Zlikavac32\BeanstalkdLib\NotFoundException;
-use Zlikavac32\BeanstalkdLib\TubeHandle;
+use function Zlikavac32\BeanstalkdLib\microTimeToHuman;
 
 class PeekCommand implements Command
 {
@@ -82,29 +83,31 @@ class PeekCommand implements Command
 
     private function peekJobHandle(array $arguments): JobHandle
     {
-        if (count($arguments) === 1) {
-            return $this->client->peek((int) $arguments[0]);
-        } else if (count($arguments) !== 2) {
-            throw new CommandException('Not enough parameters given');
+        $options = $arguments['-r'] + $arguments['-b'] + $arguments['-d'];
+
+        if (0 === $options) {
+            return $this->client->peek((int) $arguments['tube-name-or-job-id']);
+        } else if ($options > 1) {
+            throw new CommandException('Only one of -d, -b and -r can be used at a time');
         }
 
-        $tube = $this->client->tube($arguments[1]);
+        $tube = $this->client->tube($arguments['tube-name-or-job-id']);
 
-        switch ($arguments[0]) {
-            case '-r':
+        switch (true) {
+            case $arguments['-r']:
                 return $tube->peekReady();
 
                 break;
-            case '-b':
+            case $arguments['-b']:
                 return $tube->peekBuried();
 
                 break;
-            case '-d':
+            case $arguments['-d']:
                 return $tube->peekDelayed();
 
                 break;
             default:
-                throw new CommandException(sprintf('Unknown state %s given', $arguments[0]));
+                throw new LogicException();
         }
     }
 
@@ -195,5 +198,16 @@ TEXT
     public function name(): string
     {
         return 'peek';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([
+            new Option('b'),
+            new Option('d'),
+            new Option('r'),
+        ], [
+            new Operand('tube-name-or-job-id', Operand::REQUIRED)
+        ]);
     }
 }

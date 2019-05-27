@@ -60,13 +60,9 @@ class KickCommandSpec extends ObjectBehavior
             ->shouldReturn('kick');
     }
 
-    public function it_should_throw_exception_when_first_argument_is_missing(
-        InputInterface $input,
-        HelperSet $helperSet,
-        OutputInterface $output
-    ): void {
-        $this->shouldThrow(new CommandException('Tube name must be provided'))
-            ->duringRun([], $input, $helperSet, $output);
+    public function it_should_have_tube_name_as_required_in_prototype(): void
+    {
+        $this->prototype()->shouldHaveOperandAsRequired('tube-name');
     }
 
     public function it_should_kick_one_job_as_default_number_of_jobs(
@@ -84,7 +80,7 @@ class KickCommandSpec extends ObjectBehavior
 
         $output->writeln('Kicked 1 job(s)')->shouldBeCalled();
 
-        $this->run(['foo'], $input, $helperSet, $output);
+        $this->run(['tube-name' => 'foo', 'number-of-jobs' => null], $input, $helperSet, $output);
     }
 
     public function it_should_throw_exception_when_number_of_jobs_is_less_than_1(
@@ -93,7 +89,7 @@ class KickCommandSpec extends ObjectBehavior
         OutputInterface $output
     ): void {
         $this->shouldThrow(new CommandException('Number of jobs must be >= 1, 0 given'))
-            ->duringRun(['foo', '0'], $input, $helperSet, $output);
+            ->duringRun(['tube-name' => 'foo', 'number-of-jobs' => '0'], $input, $helperSet, $output);
     }
 
     public function it_should_kick_provided_number_of_jobs(
@@ -111,6 +107,6 @@ class KickCommandSpec extends ObjectBehavior
 
         $output->writeln('Kicked 23 job(s)')->shouldBeCalled();
 
-        $this->run(['foo', '32'], $input, $helperSet, $output);
+        $this->run(['tube-name' => 'foo', 'number-of-jobs' => '32'], $input, $helperSet, $output);
     }
 }

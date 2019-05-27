@@ -6,6 +6,7 @@ namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
 use Ds\Vector;
+use GetOpt\Operand;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,15 +24,11 @@ class KickCommand implements Command {
     }
 
     public function run(array $arguments, InputInterface $input, HelperSet $helperSet, OutputInterface $output): void {
-        if (!isset($arguments[0])) {
-            throw new CommandException('Tube name must be provided');
-        }
-
-        $tubeName = $arguments[0];
+        $tubeName = $arguments['tube-name'];
         $numberOfJobs = 1;
 
-        if (isset($arguments[1])) {
-            $numberOfJobs = (int) $arguments[1];
+        if (null !== $arguments['number-of-jobs']) {
+            $numberOfJobs = (int) $arguments['number-of-jobs'];
 
             if ($numberOfJobs < 1) {
                 throw new CommandException(sprintf('Number of jobs must be >= 1, %d given', $numberOfJobs));
@@ -74,5 +71,13 @@ TEXT
 
     public function name(): string {
         return 'kick';
+    }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype([], [
+            new Operand('tube-name', Operand::REQUIRED),
+            new Operand('number-of-jobs')
+        ]);
     }
 }

@@ -9,11 +9,17 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\ArgumentsProcessor;
 use Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\Command;
+use Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\Prototype;
 use Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\StaticCommandRunner;
 
 class StaticCommandRunnerSpec extends ObjectBehavior
 {
+    public function let(ArgumentsProcessor $argumentsProcessor): void
+    {
+        $this->beConstructedWith($argumentsProcessor);
+    }
 
     public function it_is_initializable(): void
     {
@@ -28,7 +34,7 @@ class StaticCommandRunnerSpec extends ObjectBehavior
         $output->writeln('Exists the program')
             ->shouldBeCalled();
 
-        $this->run('help', ['quit'], $input, $output, $helperSet)
+        $this->run('help', 'quit', $input, $output, $helperSet)
             ->shouldReturn(0);
     }
 
@@ -40,17 +46,18 @@ class StaticCommandRunnerSpec extends ObjectBehavior
         $output->writeln('Displays help in general or help for a given command')
             ->shouldBeCalled();
 
-        $this->run('help', ['help'], $input, $output, $helperSet)
+        $this->run('help', 'help', $input, $output, $helperSet)
             ->shouldReturn(0);
     }
 
     public function it_should_display_help_for_external_command(
+        ArgumentsProcessor $argumentsProcessor,
         InputInterface $input,
         ConsoleOutputInterface $output,
         Command $command,
         HelperSet $helperSet
     ): void {
-        $this->beConstructedWith($command);
+        $this->beConstructedWith($argumentsProcessor, $command);
 
         $command->name()
             ->willReturn('foo');
@@ -58,7 +65,7 @@ class StaticCommandRunnerSpec extends ObjectBehavior
         $command->help($output)
             ->shouldBeCalled();
 
-        $this->run('help', ['foo'], $input, $output, $helperSet)
+        $this->run('help', 'foo', $input, $output, $helperSet)
             ->shouldReturn(0);
     }
 
@@ -70,7 +77,7 @@ class StaticCommandRunnerSpec extends ObjectBehavior
         $output->writeln('<error>Unknown command i-do-not-exist</error>')
             ->shouldBeCalled();
 
-        $this->run('help', ['i-do-not-exist'], $input, $output, $helperSet)
+        $this->run('help', 'i-do-not-exist', $input, $output, $helperSet)
             ->shouldReturn(1);
     }
 
@@ -82,48 +89,41 @@ class StaticCommandRunnerSpec extends ObjectBehavior
         $output->writeln('<error>Unknown command i-do-not-exist. Use help to show available commands</error>')
             ->shouldBeCalled();
 
-        $this->run('i-do-not-exist', [], $input, $output, $helperSet)
+        $this->run('i-do-not-exist', '', $input, $output, $helperSet)
             ->shouldReturn(1);
     }
 
-    public function it_should_run_single_command_without_arguments(
+    public function it_should_run_single_command(
+        ArgumentsProcessor $argumentsProcessor,
         Command $command,
         InputInterface $input,
         ConsoleOutputInterface $output,
-        HelperSet $helperSet
+        HelperSet $helperSet,
+        Prototype $prototype
     ): void {
         $command->name()
             ->willReturn('foo');
 
-        $this->beConstructedWith($command);
+        $this->beConstructedWith($argumentsProcessor, $command);
 
-        $command->run([], $input, $helperSet, $output);
+        $command->prototype()
+            ->willReturn($prototype);
 
-        $this->run('foo', [], $input, $output, $helperSet)
-            ->shouldReturn(0);
-    }
+        $argumentsProcessor->process($prototype, 'foo bar')
+            ->willReturn(['foo' => 'bar']);
 
-    public function it_should_run_single_command_with_arguments(
-        Command $command,
-        InputInterface $input,
-        ConsoleOutputInterface $output,
-        HelperSet $helperSet
-    ): void {
-        $command->name()
-            ->willReturn('foo');
+        $command->run(['foo' => 'bar'], $input, $helperSet, $output)
+            ->shouldBeCalled();
 
-        $this->beConstructedWith($command);
-
-        $command->run(['bar', 'baz'], $input, $helperSet, $output);
-
-        $this->run('foo', ['bar', 'baz'], $input, $output, $helperSet)
+        $this->run('foo', 'foo bar', $input, $output, $helperSet)
             ->shouldReturn(0);
     }
 
     public function it_should_return_autocomplete_list(
+        ArgumentsProcessor $argumentsProcessor,
         Command $command
     ): void {
-        $this->beConstructedWith($command);
+        $this->beConstructedWith($argumentsProcessor, $command);
 
         $command->name()
             ->willReturn('foo');

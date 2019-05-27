@@ -38,7 +38,8 @@
         "zlikavac32/beanstalkd-lib": "^0.3.0",
         "zlikavac32/php-enum": "^2.0",
         "zlikavac32/nsb-decorators": "^0.1.0",
-        "symfony/var-dumper": "^4.0"
+        "symfony/var-dumper": "^4.0",
+        "ulrichsg/getopt-php": "^3.2"
     },
     "suggest": {
         "ext-ds": "For better performance with php-ds"

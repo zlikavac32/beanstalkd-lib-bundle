@@ -50,7 +50,15 @@ class BeanstalkdServerControllerRunnable implements HelperSetAwareRunnable, Runn
             $nextCommand = array_shift($commandFromInput);
 
             try {
-                return $this->commandRunner->run($nextCommand, $commandFromInput, $input, $output, $this->helperSet);
+                return $this->commandRunner->run($nextCommand,
+                    implode(
+                        ' ',
+                        array_map('escapeshellarg', $commandFromInput)
+                    ),
+                    $input,
+                    $output,
+                    $this->helperSet
+                );
             } catch (CommandRunnerQuitException $e) {
                 return 0;
             }
@@ -75,12 +83,12 @@ class BeanstalkdServerControllerRunnable implements HelperSetAwareRunnable, Runn
                 continue;
             }
 
-            $parsed = preg_split('/\s+/', trim($commandLine));
+            $parsed = preg_split('/\s+/', trim($commandLine), 2);
 
-            $nextCommand = array_shift($parsed);
+            $nextCommand = $parsed[0];
 
             try {
-                $this->commandRunner->run($nextCommand, $parsed, $input, $output, $this->helperSet);
+                $this->commandRunner->run($nextCommand, $parsed[1] ?? '', $input, $output, $this->helperSet);
             } catch (CommandRunnerQuitException $e) {
                 break;
             }

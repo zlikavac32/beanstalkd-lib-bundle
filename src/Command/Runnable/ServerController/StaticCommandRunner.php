@@ -18,8 +18,12 @@ class StaticCommandRunner implements CommandRunner
      * @var Command[]|Map
      */
     private $commands;
+    /**
+     * @var ArgumentsProcessor
+     */
+    private $argumentsProcessor;
 
-    public function __construct(Command ...$commands)
+    public function __construct(ArgumentsProcessor $argumentsProcessor, Command ...$commands)
     {
         $map = new Map();
 
@@ -28,11 +32,12 @@ class StaticCommandRunner implements CommandRunner
         }
 
         $this->commands = $map;
+        $this->argumentsProcessor = $argumentsProcessor;
     }
 
     public function run(
         string $commandName,
-        array $arguments,
+        string $arguments,
         InputInterface $input,
         OutputInterface $output,
         HelperSet $helperSet
@@ -54,7 +59,7 @@ class StaticCommandRunner implements CommandRunner
 
     private function runRegisteredCommand(
         string $command,
-        array $arguments,
+        string $arguments,
         InputInterface $input,
         OutputInterface $output,
         HelperSet $helperSet
@@ -69,7 +74,14 @@ class StaticCommandRunner implements CommandRunner
         }
 
         try {
-            $this->commands[$command]->run($arguments, $input, $helperSet, $output);
+            $command = $this->commands[$command];
+
+            $command->run(
+                $this->argumentsProcessor->process($command->prototype(), $arguments),
+                $input,
+                $helperSet,
+                $output
+            );
         } catch (CommandException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
@@ -81,15 +93,14 @@ class StaticCommandRunner implements CommandRunner
 
     private function handleHelpCommand(
         Sequence $commandsWithHelpAndQuit,
-        array $arguments,
+        string $commandName,
         OutputInterface $output
     ): int {
-        if (!isset($arguments[0])) {
+        if (empty($commandName)) {
             $this->printHelp($output, $commandsWithHelpAndQuit);
 
             return 0;
         }
-        $commandName = $arguments[0];
 
         if ('quit' === $commandName) {
             $output->writeln('Exists the program');

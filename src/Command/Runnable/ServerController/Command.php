@@ -18,4 +18,6 @@ interface Command {
     public function autoComplete(): Sequence;
 
     public function help(OutputInterface $output): void;
+
+    public function prototype(): Prototype;
 }

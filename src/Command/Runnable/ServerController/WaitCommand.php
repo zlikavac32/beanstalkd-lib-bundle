@@ -62,4 +62,9 @@ TEXT
     public function name(): string {
         return 'wait';
     }
+
+    public function prototype(): Prototype
+    {
+        return new Prototype();
+    }
 }

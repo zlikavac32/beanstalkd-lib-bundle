@@ -15,7 +15,7 @@ interface CommandRunner
     /**
      * @throws CommandRunnerQuitException
      */
-    public function run(string $commandName, array $arguments, InputInterface $input, OutputInterface $outputm , HelperSet $helperSet): int;
+    public function run(string $commandName, string $arguments, InputInterface $input, OutputInterface $outputm , HelperSet $helperSet): int;
 
     /**
      * @return Sequence|string[]

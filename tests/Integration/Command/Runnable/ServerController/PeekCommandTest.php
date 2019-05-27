@@ -118,7 +118,7 @@ class PeekCommandTest extends TestCase
             ->with($this->equalTo(32))
             ->willThrowException(new JobNotFoundException(32));
 
-        $this->command->run(['32'], $this->input, new HelperSet(), $this->output);
+        $this->command->run(['-b' => null, '-d' => null, '-r' => null, 'tube-name-or-job-id' => '32'], $this->input, new HelperSet(), $this->output);
     }
 
     /**
@@ -136,22 +136,40 @@ class PeekCommandTest extends TestCase
         $this->tubeHandle->method('peekReady')
             ->willThrowException(new NotFoundException('No job in tube'));
 
-        $this->command->run(['-r', 'foo'], $this->input, new HelperSet(), $this->output);
+        $this->command->run(['-b' => null, '-d' => null, '-r' => 1, 'tube-name-or-job-id' => 'foo'], $this->input, new HelperSet(), $this->output);
     }
 
     /**
      * @test
      */
-    public function unknown_job_state_throws_exception(): void
+    public function to_many_options_throws_exception(): void
     {
         $this->expectException(CommandException::class);
-        $this->expectExceptionMessage('Unknown state abc given');
+        $this->expectExceptionMessage('Only one of -d, -b and -r can be used at a time');
 
         $this->client->method('tube')
             ->with($this->equalTo('foo'))
             ->willReturn($this->tubeHandle);
 
-        $this->command->run(['abc', 'foo'], $this->input, new HelperSet(), $this->output);
+        $this->command->run(['-b' => null, '-d' => 1, '-r' => 1, 'tube-name-or-job-id' => 'foo'], $this->input, new HelperSet(), $this->output);
+    }
+
+    /**
+     * @test
+     */
+    public function tube_name_or_job_id_is_required(): void
+    {
+        foreach ($this->command->prototype()->operands() as $operand) {
+            if ($operand->getName() !== 'tube-name-or-job-id') {
+                continue;
+            }
+
+            self::assertTrue($operand->isRequired());
+
+            return ;
+        }
+
+        $this->fail('Operand tube-name-or-job-id not found');
     }
 
     /**
@@ -177,7 +195,7 @@ class PeekCommandTest extends TestCase
                 new JobMetrics(4, 6, 8, 9, 19)
             ));
 
-        $this->command->run(['-r', 'foo'], $this->input, new HelperSet(), $this->output);
+        $this->command->run(['-b' => null, '-d' => null, '-r' => 1, 'tube-name-or-job-id' => 'foo'], $this->input, new HelperSet(), $this->output);
 
         $expectedOutput = <<<'TEXT'
 ID: 32

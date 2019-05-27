@@ -46,11 +46,25 @@ class BeanstalkdServerControllerRunnableSpec extends ObjectBehavior
     {
         $this->useHelperSet($helperSet);
 
-        $commandRunner->run('help', [], $input, $output, $helperSet)
+        $commandRunner->run('help', '', $input, $output, $helperSet)
             ->shouldBeCalled()->willReturn(32);
 
         $input->getArgument('cmd')
             ->willReturn(['help']);
+
+        $this->run($input, $output)
+            ->shouldReturn(32);
+    }
+
+    public function it_should_run_single_internal_command_with_escaped_arguments(CommandRunner $commandRunner, InputInterface $input, ConsoleOutputInterface $output, HelperSet $helperSet): void
+    {
+        $this->useHelperSet($helperSet);
+
+        $commandRunner->run('help', '\'foo bar\'', $input, $output, $helperSet)
+            ->shouldBeCalled()->willReturn(32);
+
+        $input->getArgument('cmd')
+            ->willReturn(['help', 'foo bar']);
 
         $this->run($input, $output)
             ->shouldReturn(32);
@@ -99,11 +113,11 @@ class BeanstalkdServerControllerRunnableSpec extends ObjectBehavior
         $question->setAutocompleterValues([]);
 
         $questionHelper->ask($input, $output, $question)
-            ->willReturn(null, 'help', 'quit');
+            ->willReturn(null, 'help foo', 'quit');
 
-        $commandRunner->run('help', [], $input, $output, $helperSet)->shouldBeCalled()
+        $commandRunner->run('help', 'foo', $input, $output, $helperSet)->shouldBeCalled()
             ->willReturn(0);
-        $commandRunner->run('quit', [], $input, $output, $helperSet)->shouldBeCalled()
+        $commandRunner->run('quit', '', $input, $output, $helperSet)->shouldBeCalled()
             ->willThrow(new CommandRunnerQuitException());
 
         $this->run($input, $output)

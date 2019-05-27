@@ -16,6 +16,10 @@ services:
         tags:
             - { name: console_runnable, command: worker:controller }
 
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\ArgumentsProcessor: '@Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\GetOptArgumentsProcessor'
+
+    Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\GetOptArgumentsProcessor: ~
+
     Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\CommandRunner: '@Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\StaticCommandRunner'
 
     Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController\StaticCommandRunner:

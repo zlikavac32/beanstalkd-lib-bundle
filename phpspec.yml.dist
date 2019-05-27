@@ -3,3 +3,5 @@ suites:
         namespace: Zlikavac32\BeanstalkdLibBundle
         psr4_prefix: Zlikavac32\BeanstalkdLibBundle
 formatter.name: dot
+matchers:
+    - Zlikavac32\BeanstalkdLibBundle\TestHelper\phpSpec\Matcher\RequiredOperandMatcher
