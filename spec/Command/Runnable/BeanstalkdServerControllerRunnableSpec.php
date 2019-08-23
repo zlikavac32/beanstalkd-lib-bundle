@@ -6,6 +6,7 @@ namespace spec\Zlikavac32\BeanstalkdLibBundle\Command\Runnable;
 
 use Ds\Vector;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -109,10 +110,7 @@ class BeanstalkdServerControllerRunnableSpec extends ObjectBehavior
         $commandRunner->autocomplete()
             ->willReturn(new Vector());
 
-        $question = new Question('> ');
-        $question->setAutocompleterValues([]);
-
-        $questionHelper->ask($input, $output, $question)
+        $questionHelper->ask($input, $output, Argument::type(Question::class))
             ->willReturn(null, 'help foo', 'quit');
 
         $commandRunner->run('help', 'foo', $input, $output, $helperSet)->shouldBeCalled()

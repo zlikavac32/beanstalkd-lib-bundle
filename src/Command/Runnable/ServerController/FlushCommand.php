@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Zlikavac32\BeanstalkdLibBundle\Command\Runnable\ServerController;
 
 use Ds\Sequence;
+use Ds\Set;
 use Ds\Vector;
+use GetOpt\GetOpt;
 use GetOpt\Operand;
 use GetOpt\Option;
+use RuntimeException;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Zlikavac32\BeanstalkdLib\Client;
+use Zlikavac32\BeanstalkdLib\JobState;
 
 class FlushCommand implements Command
 {
@@ -48,8 +52,10 @@ class FlushCommand implements Command
             }
         }
 
+        $jobStates = $this->resolveJobStates($arguments);
+
         foreach ($tubeNames as $tubeName) {
-            $this->client->tube($tubeName)->flush();
+            $this->client->tube($tubeName)->flush($jobStates);
         }
     }
 
@@ -69,7 +75,7 @@ class FlushCommand implements Command
 
     public function autoComplete(): Sequence
     {
-        $ret = new Vector(['flush', 'flush -f', 'flush <TUBE-NAME>', 'flush -f <TUBE-NAME>']);
+        $ret = new Vector(['flush', 'flush -f', 'flush -b', 'flush -r', 'flush -d', 'flush <TUBE-NAME>', 'flush -f <TUBE-NAME>']);
 
         $tubeNames = $this->client
             ->tubes()
@@ -89,6 +95,14 @@ class FlushCommand implements Command
             <<<'TEXT'
 Flushes every tube or a single tube. 
 
+Additional flags to control flushed job states:
+
+- <info>-b</info> - buried
+- <info>-d</info> - delayed
+- <info>-r</info> - ready
+
+Flags can be combined, and if none is provided, all three are implied.
+
 To skip question, use <info>-f</info> flag.
 
 <comment>Reserved jobs are not flushed.</comment>
@@ -104,9 +118,34 @@ TEXT
     public function prototype(): Prototype
     {
         return new Prototype([
-            new Option('f')
+            new Option('f'),
+            new Option('-b'),
+            new Option('-d'),
+            new Option('-r')
         ], [
             new Operand('tube-name')
         ]);
+    }
+
+    /**
+     * @param string[] $arguments
+     *
+     * @return Set|JobState[]
+     */
+    private function resolveJobStates(array $arguments): Set
+    {
+        $states = new Set();
+
+        foreach (['-r' => JobState::READY(), '-d' => JobState::DELAYED(), '-b' => JobState::BURIED()] as $k => $state) {
+            if (isset($arguments[$k])) {
+                $states->add($state);
+            }
+        }
+
+        if ($states->isEmpty()) {
+            return new Set([JobState::READY(), JobState::BURIED(), JobState::DELAYED()]);
+        }
+
+        return $states;
     }
 }
