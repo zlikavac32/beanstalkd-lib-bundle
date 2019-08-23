@@ -242,7 +242,7 @@ class DumperMockClient implements Client
         throw new UnsupportedMethodCallException(__METHOD__);
     }
 
-    public function flush(): void
+    public function flush(Set $states): void
     {
         throw new UnsupportedMethodCallException(__METHOD__);
     }
@@ -304,7 +304,7 @@ class DumperMockTubeHandle implements TubeHandle
         throw new UnsupportedMethodCallException(__METHOD__);
     }
 
-    public function flush(): void
+    public function flush(Set $states): void
     {
         throw new UnsupportedMethodCallException(__METHOD__);
     }

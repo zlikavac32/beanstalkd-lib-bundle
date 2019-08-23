@@ -1,5 +1,9 @@
 # Beanstalkd lib bundle
 
+## Unreleased
+
+* **[ADDED]** `flush` server controller command now be provided with job states to flush
+
 ## 0.1.2 (2019-05-12)
 
 * **[ADDED]** `delete` server controller command
