@@ -14,14 +14,11 @@ use Zlikavac32\AlarmScheduler\TestHelper\PHPUnit\UnsupportedMethodCallException;
 class InMemoryConsoleOutput extends StreamOutput implements ConsoleOutputInterface
 {
 
-    /**
-     * @var StreamOutput
-     */
-    private $errorOutput;
+    private StreamOutput $errorOutput;
     /**
      * @var ConsoleSectionOutput[]
      */
-    private $outputSections = [];
+    private array $outputSections = [];
 
     public function __construct(int $verbosity = self::VERBOSITY_NORMAL)
     {

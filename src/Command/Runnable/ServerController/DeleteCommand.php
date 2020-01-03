@@ -16,10 +16,7 @@ use Zlikavac32\BeanstalkdLib\JobNotFoundException;
 class DeleteCommand implements Command
 {
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {

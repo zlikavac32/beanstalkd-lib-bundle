@@ -15,18 +15,11 @@ use function Zlikavac32\SymfonyExtras\DependencyInjection\assertValueIsOfType;
 
 class RunnerFactoryPass implements CompilerPassInterface {
 
-    /**
-     * @var string
-     */
-    private $runnerTag;
-    /**
-     * @var string
-     */
-    private $linkRunnerTag;
-    /**
-     * @var string
-     */
-    private $linkTubesTag;
+    private string $runnerTag;
+
+    private string $linkRunnerTag;
+
+    private string $linkTubesTag;
 
     public function __construct(
         string $runnerTag = 'job_runner',

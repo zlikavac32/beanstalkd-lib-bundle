@@ -15,13 +15,11 @@ class StaticCommandRunner implements CommandRunner
 {
 
     /**
-     * @var Command[]|Map
+     * @var Command[]
      */
-    private $commands;
-    /**
-     * @var ArgumentsProcessor
-     */
-    private $argumentsProcessor;
+    private Map $commands;
+
+    private ArgumentsProcessor $argumentsProcessor;
 
     public function __construct(ArgumentsProcessor $argumentsProcessor, Command ...$commands)
     {

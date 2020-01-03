@@ -16,14 +16,9 @@ use function Zlikavac32\SymfonyExtras\DependencyInjection\assertValueIsOfType;
 
 class TubeConfigurationFactoryPass implements CompilerPassInterface {
 
-    /**
-     * @var string
-     */
-    private $tag;
-    /**
-     * @var string
-     */
-    private $linkerTag;
+    private string $tag;
+
+    private string $linkerTag;
 
     public function __construct(
         string $tag = 'tube_configuration',

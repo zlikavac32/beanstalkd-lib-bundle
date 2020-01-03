@@ -25,10 +25,7 @@ use function Zlikavac32\BeanstalkdLib\microTimeToHuman;
 class PeekCommand implements Command
 {
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {

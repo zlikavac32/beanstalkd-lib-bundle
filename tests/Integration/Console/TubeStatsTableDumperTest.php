@@ -23,10 +23,7 @@ use Zlikavac32\BeanstalkdLibBundle\TestHelper\PHPUnit\InMemoryConsoleOutput;
 class TubeStatsTableDumperTest extends TestCase
 {
 
-    /**
-     * @var DumperMockClient
-     */
-    private $client;
+    private ?DumperMockClient $client;
 
     protected function setUp(): void
     {

@@ -31,18 +31,11 @@ abstract class BruteForceAlgorithm extends Enum implements Hashable
 class BruteForceRule
 {
 
-    /**
-     * @var BruteForceAlgorithm
-     */
-    private $algorithm;
-    /**
-     * @var int
-     */
-    private $range;
-    /**
-     * @var string
-     */
-    private $hash;
+    private BruteForceAlgorithm $algorithm;
+
+    private int $range;
+
+    private string $hash;
 
     public function __construct(string $hash, BruteForceAlgorithm $algorithm, int $range)
     {

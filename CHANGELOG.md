@@ -1,5 +1,9 @@
 # Beanstalkd lib bundle
 
+## Unreleased
+
+* **[CHANGED]** Typed properties are now used (PHP 7.4 is a minimum version to be used)
+
 ## 0.1.3 (2019-08-23)
 
 * **[ADDED]** `flush` server controller command now be provided with job states to flush

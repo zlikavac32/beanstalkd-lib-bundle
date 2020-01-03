@@ -24,30 +24,17 @@ use Zlikavac32\BeanstalkdLibBundle\TestHelper\PHPUnit\InMemoryConsoleOutput;
 class PeekCommandTest extends TestCase
 {
 
-    /**
-     * @var InMemoryConsoleOutput
-     */
-    private $output;
-    /**
-     * @var InputInterface
-     */
-    private $input;
-    /**
-     * @var Client|MockObject
-     */
-    private $client;
-    /**
-     * @var TubeHandle|MockObject
-     */
-    private $tubeHandle;
-    /**
-     * @var JobHandle|MockObject
-     */
-    private $jobHandle;
-    /**
-     * @var PeekCommand
-     */
-    private $command;
+    private ?InMemoryConsoleOutput $output;
+
+    private ?MockObject $input;
+
+    private ?MockObject $client;
+
+    private ?MockObject $tubeHandle;
+
+    private ?MockObject $jobHandle;
+
+    private ?PeekCommand $command;
 
     protected function setUp(): void
     {

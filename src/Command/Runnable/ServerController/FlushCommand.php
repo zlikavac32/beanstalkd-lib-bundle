@@ -22,10 +22,7 @@ use Zlikavac32\BeanstalkdLib\JobState;
 class FlushCommand implements Command
 {
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {

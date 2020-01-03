@@ -17,15 +17,9 @@ use Zlikavac32\BeanstalkdLibBundle\DependencyInjection\BeanstalkdLibExtension;
 class BeanstalkdLibExtensionTest extends TestCase
 {
 
-    /**
-     * @var ContainerBuilder
-     */
-    private $containerBuilder;
+    private ?ContainerBuilder $containerBuilder;
 
-    /**
-     * @var BeanstalkdLibExtension
-     */
-    private $extension;
+    private ?BeanstalkdLibExtension $extension;
 
     protected function setUp(): void
     {

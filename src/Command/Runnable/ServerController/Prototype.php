@@ -11,13 +11,13 @@ class Prototype
 {
 
     /**
-     * @var array|Option[]
+     * @var Option[]
      */
-    private $options;
+    private array $options;
     /**
-     * @var array|Operand[]
+     * @var Operand[]
      */
-    private $operands;
+    private array $operands;
 
     public function __construct(array $options = [], array $operands = [])
     {

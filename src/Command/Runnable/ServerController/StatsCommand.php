@@ -20,18 +20,11 @@ use Zlikavac32\BeanstalkdLibBundle\Console\TubeStatsTableDumper;
 
 class StatsCommand implements Command {
 
-    /**
-     * @var Client
-     */
-    private $client;
-    /**
-     * @var AlarmScheduler
-     */
-    private $alarmScheduler;
-    /**
-     * @var TubeStatsTableDumper
-     */
-    private $tableDumper;
+    private Client $client;
+
+    private AlarmScheduler $alarmScheduler;
+
+    private TubeStatsTableDumper $tableDumper;
 
     public function __construct(Client $client, TubeStatsTableDumper $tableDumper, AlarmScheduler $alarmScheduler) {
         $this->client = $client;

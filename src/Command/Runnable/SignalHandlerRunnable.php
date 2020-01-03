@@ -13,14 +13,9 @@ use Zlikavac32\SymfonyExtras\Command\Runnable\Runnable;
 
 class SignalHandlerRunnable implements Runnable {
 
-    /**
-     * @var Runnable
-     */
-    private $runnable;
-    /**
-     * @var SignalHandlerInstaller
-     */
-    private $signalHandlerInstaller;
+    private Runnable $runnable;
+
+    private SignalHandlerInstaller $signalHandlerInstaller;
 
     public function __construct(Runnable $runnable, SignalHandlerInstaller $signalHandlerInstaller) {
         $this->runnable = $runnable;

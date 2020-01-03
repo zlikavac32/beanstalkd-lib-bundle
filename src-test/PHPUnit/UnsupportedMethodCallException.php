@@ -10,10 +10,7 @@ use Throwable;
 class UnsupportedMethodCallException extends LogicException
 {
 
-    /**
-     * @var string
-     */
-    private $classAndMethod;
+    private string $classAndMethod;
 
     public function __construct(string $classAndMethod, int $code = 0, Throwable $previous = null)
     {
