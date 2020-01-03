@@ -14,24 +14,15 @@ use Zlikavac32\BeanstalkdLibBundle\Console\TubeStatsTableDumper;
 class RefreshTableAlarmHandler implements AlarmHandler
 {
 
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-    /**
-     * @var int
-     */
-    private $sleepTime;
-    /**
-     * @var TubeStatsTableDumper
-     */
-    private $tableDumper;
-    /**
-     * @var Sequence
-     */
-    private $tableColumns;
-    private $sortColumn = 0;
-    private $descending = true;
+    private OutputInterface $output;
+
+    private int $sleepTime;
+
+    private TubeStatsTableDumper $tableDumper;
+
+    private Sequence $tableColumns;
+    private int $sortColumn = 0;
+    private bool $descending = true;
 
     public function __construct(
         OutputInterface $output,

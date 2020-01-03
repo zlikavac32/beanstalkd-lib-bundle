@@ -26,7 +26,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-pcntl": "*",
         "ext-posix": "*",
         "php-ds/php-ds": "^1.2",
@@ -39,13 +39,13 @@
         "zlikavac32/php-enum": "^2.0",
         "zlikavac32/nsb-decorators": "^0.1.0",
         "symfony/var-dumper": "^4.0",
-        "ulrichsg/getopt-php": "^3.2"
+        "ulrichsg/getopt-php": "^3.3"
     },
     "suggest": {
         "ext-ds": "For better performance with php-ds"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0",
-        "phpspec/phpspec": "^5.1"
+        "phpunit/phpunit": "^8.5",
+        "phpspec/phpspec": "^6.0"
     }
 }

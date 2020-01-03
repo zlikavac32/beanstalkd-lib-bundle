@@ -13,14 +13,9 @@ use Zlikavac32\BeanstalkdLib\Client;
 
 class WaitCommand implements Command {
 
-    /**
-     * @var Client
-     */
-    private $client;
-    /**
-     * @var int
-     */
-    private $sleepTime;
+    private Client $client;
+
+    private int $sleepTime;
 
     public function __construct(Client $client, int $sleepTime) {
         $this->client = $client;

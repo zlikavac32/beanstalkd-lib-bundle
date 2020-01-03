@@ -20,14 +20,9 @@ use Zlikavac32\SymfonyExtras\Command\Runnable\RunnableWithHelp;
 class BeanstalkdServerControllerRunnable implements HelperSetAwareRunnable, RunnableWithHelp
 {
 
-    /**
-     * @var HelperSet
-     */
-    private $helperSet;
-    /**
-     * @var CommandRunner
-     */
-    private $commandRunner;
+    private HelperSet $helperSet;
+
+    private CommandRunner $commandRunner;
 
     public function __construct(CommandRunner $commandRunner)
     {

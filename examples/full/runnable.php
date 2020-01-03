@@ -13,10 +13,7 @@ use Zlikavac32\BeanstalkdLib\Client;
 class QueueBruteForceRunnable implements \Zlikavac32\SymfonyExtras\Command\Runnable\Runnable
 {
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {

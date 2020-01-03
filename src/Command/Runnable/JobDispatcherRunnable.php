@@ -17,18 +17,11 @@ use Zlikavac32\SymfonyExtras\Command\Runnable\RunnableWithHelp;
 
 class JobDispatcherRunnable implements RunnableWithHelp {
 
-    /**
-     * @var JobDispatcher
-     */
-    private $jobDispatcher;
-    /**
-     * @var Client
-     */
-    private $client;
-    /**
-     * @var CompositeJobObserver
-     */
-    private $jobObserver;
+    private JobDispatcher $jobDispatcher;
+
+    private Client $client;
+
+    private CompositeJobObserver $jobObserver;
 
     public function __construct(JobDispatcher $jobDispatcher, Client $client, CompositeJobObserver $jobObserver) {
         $this->jobDispatcher = $jobDispatcher;
