@@ -116,9 +116,9 @@ TEXT
     {
         return new Prototype([
             new Option('f'),
-            new Option('-b'),
-            new Option('-d'),
-            new Option('-r')
+            new Option('b'),
+            new Option('d'),
+            new Option('r')
         ], [
             new Operand('tube-name')
         ]);
