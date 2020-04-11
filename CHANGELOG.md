@@ -1,6 +1,6 @@
 # Beanstalkd lib bundle
 
-## Unrelesed
+## 0.3.0 (2020-04-11)
 
 * **[CHANGED]** Minimum supported `zlikavac32/php-enum` version is 3.0.0
 * **[CHANGED]** Minimum supported `zlikavac32/beanstalkd-lib` version is 0.5.0
