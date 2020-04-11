@@ -35,8 +35,8 @@
         "symfony/dependency-injection": "^4.1",
         "symfony/config": "^4.2",
         "zlikavac32/symfony-extras": "^0.2.0",
-        "zlikavac32/beanstalkd-lib": "^0.4.0",
-        "zlikavac32/php-enum": "^2.0",
+        "zlikavac32/beanstalkd-lib": "^0.5.0",
+        "zlikavac32/php-enum": "^3.0",
         "zlikavac32/nsb-decorators": "^0.1.0",
         "symfony/var-dumper": "^4.0",
         "ulrichsg/getopt-php": "^3.3"
@@ -46,6 +46,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
-        "phpspec/phpspec": "^6.0"
+        "phpspec/phpspec": "^6.1"
     }
 }
